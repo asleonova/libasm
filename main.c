@@ -1,47 +1,113 @@
-#include <stdio.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-int ft_strlen(const char *s);
-char *ft_strcpy(char *dst, const char *src);
-int ft_strcmp(const char *s1, const char *s2);
-int ft_write(int fd, const void *buf, size_t nbyte);
-int ft_read(int fildes, void *buf, size_t nbyte);
+#include "libasm.h" 
 
 int main(void)
 {
-    char buffer[15];
-    char *str1 = "hello";
-    char *str2 = "hello Anna";
-    int i;
-    int j;
-    int		fd;
+    char	dst[200];
+	int		fd;
 	char	buff[200];
-	char	check[200];
 	ssize_t	ret;
 
-    i = ft_write(1, str1, 5);
-    j = ft_read(30, str2, 3);
-    printf("\n%d - %d\n", i, errno);
-    printf("\n%d - %d\n", j, errno);
-   // char *str = "hello, world";
-    printf("STRLEN: %d\n", ft_strlen("hello"));
-    printf("STRCPY: %s\n", ft_strcpy(buffer,"hello Anna"));
-    printf("STRCMP: %d\n", ft_strcmp(str1, str2));
-    printf("STR1 %s\n", str1);
-    printf("STR2 %s\n", str2);
-    	printf("\n----------ft_read----------\n");
-	fd = open("tet.txt", O_RDONLY);
+	printf("\n__ft_strlen__\n");
+	printf("1. LIB FUNC: %d\n", (int)strlen(""));
+	printf("1. MY FUNC:  %d\n", (int)ft_strlen(""));
+	printf("2. LIB FUNC: %d\n", (int)strlen("short str"));
+	printf("2. MY FUNC: %d\n",(int)ft_strlen("short str"));
+	printf("3. LIB FUNC: %d\n", (int)strlen("very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
+    printf("3. MY FUNC:: %d\n", (int)ft_strlen("very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
+
+	printf("\n__ft_strcpy__\n");
+    printf("1. LIB FUNC: %s\n", strcpy(dst, ""));
+	printf("1. MY FUNC:  %s\n", ft_strcpy(dst, ""));
+	printf("2. LIB FUNC: %s\n", strcpy(dst, "short str"));
+	printf("2. MY FUNC: %s\n", ft_strcpy(dst, "short str"));
+	printf("3. LIB FUNC: %s\n", strcpy(dst, "very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
+    printf("3. MY FUNC:: %s\n", ft_strcpy(dst, "very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
+
+	printf("\n__ft_strcmp__\n");
+    printf("1. LIB FUNC: %d\n", strcmp("", ""));
+	printf("1. MY FUNC:  %d\n", ft_strcmp("", ""));
+	printf("2. LIB FUNC: %d\n", strcmp("you are amazing", ""));
+	printf("2. MY FUNC: %d\n", ft_strcmp("you are amazing", ""));
+    printf("3. LIB FUNC: %d\n", strcmp("", "you are amazing"));
+	printf("3. MY FUNC: %d\n", ft_strcmp("", "you are amazing"));
+	printf("4. LIB FUNC: %d\n", strcmp("you are amazing", "you are amazing, baby"));
+	printf("4. MY FUNC: %d\n", ft_strcmp("you are amazing", "you are amazing, baby"));
+	printf("5. LIB FUNC: %d\n", strcmp("you are amazing, baby", "you are amazing"));
+	printf("5. MY FUNC: %d\n", ft_strcmp("you are amazing, baby", "you are amazing"));
+	
+
+	printf("\n__ft_write__\n");
+	printf("1. LIB FUNC: %zd\n", write(1, "", 0));
+	printf("1. MY FUNC: %zd\n", ft_write(1, "", 0));
+	printf("2. LIB FUNC: %zd\n", write(1, "Have a good day!", 16));
+	printf("2. MY FUNC: %zd\n", ft_write(1, "Have a good day!", 16));
+	printf("3. LIB FUNC: %zd\n", write(1, "Have a good day!", 15));
+	printf("3. MY FUNC: %zd\n", ft_write(1, "Have a good day!", 15));
+	printf("4. LIB FUNC: %zd\n", write(1, "Have a good day!", 17));
+	printf("4. MY FUNC: %zd\n", ft_write(1, "Have a good day!", 17));
+	printf("5. LIB FUNC: %zd\n", write(1, "NULL", 5));
+	printf("5. MY FUNC: %zd\n", ft_write(1, "NULL", 5));
+	printf("6. LIB FUNC: %zd\n", write(1, "Have a good day!", 0));
+	printf("6. MY FUNC: %zd\n", ft_write(1, "Have a good day!", 0));
+	printf("7. LIB FUNC: %zd\n", write(6, "Have a good day!", 16));
+	printf("7. MY FUNC: %zd\n", ft_write(6, "Have a good day!", 16));
+	fd = open("test.txt", O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	ft_write(fd, "Some text to read for you", 25);
+	close(fd);	
+
+	printf("\n__ft_read__\n");
+	fd = open("test.txt", O_RDONLY);
 	ret = read(fd, buff, 10);
-	printf("01)standard: %zd - %s\n", ret, strncpy(check, buff, 10));
+	printf("1. LIB FUNC: %zd\n", ret);
 	close(fd);
-	fd = open("tet.txt", O_RDONLY);
+	fd = open("test.txt", O_RDONLY);
 	ret = ft_read(fd, buff, 10);
-	printf("01)      my: %zd - %s\n", ret, strncpy(check, buff, 10));
+	printf("1. MY FUNC: %zd\n", ret);
 	close(fd);
+
+	fd = open("test.txt", O_RDONLY);
+	ret = read(fd, buff, 20);
+	printf("2. LIB FUNC: %zd\n", ret);
+	close(fd);
+	fd = open("test.txt", O_RDONLY);
+	ret = ft_read(fd, buff, 20);
+	printf("2. MY FUNC: %zd\n", ret);
+	close(fd);
+
+	fd = open("libasm.h", O_RDONLY);
+	ret = read(fd, buff, 111);
+	printf("3. LIB FUNC: %zd\n", ret);
+	close(fd);
+	fd = open("libasm.h", O_RDONLY);
+	ret = ft_read(fd, buff, 111);
+	printf("3. MY FUNC: %zd\n", ret);
+	close(fd);
+
+	fd = open("libasm.h", O_RDONLY);
+	ret = read(fd, NULL, 111);
+	printf("4. LIB FUNC: %zd\n", ret);
+	close(fd);
+	fd = open("libasm.h", O_RDONLY);
+	ret = ft_read(fd, NULL, 111);
+	printf("4. MY FUNC: %zd\n", ret);
+	close(fd);
+
+	fd = open("hello", O_RDONLY);
+	ret = read(fd, buff, 20);
+	printf("5. LIB FUNC: %zd\n", ret);
+	close(fd);
+	fd = open("hello", O_RDONLY);
+	ret = ft_read(fd, buff, 20);
+	printf("5. MY FUNC: %zd\n", ret);
+	close(fd);
+	
+	printf("\n__ft_strdup__\n");
+	printf("1. LIB FUNC: %s\n", strdup(""));
+	printf("1. MY FUNC:  %s\n", ft_strdup(""));
+	printf("2. LIB FUNC: %s\n", strdup("short str"));
+	printf("2. MY FUNC: %s\n", ft_strdup("short str"));
+	printf("3. LIB FUNC: %s\n", strdup("very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
+    printf("3. MY FUNC:: %s\n", ft_strdup("very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong str"));
     return(0);
 
 }
