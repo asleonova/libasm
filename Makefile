@@ -34,7 +34,7 @@ fclean:			clean
 
 re:				fclean all
 
-test:			re
-					gcc -Wall -Wextra -Werror main.c *.o && ./a.out
+test:			re 
+			gcc -Wall -Wextra -Werror main.c *.o && ./a.out
 
 .PHONY: all, clean, fclean, re, test
